@@ -7,17 +7,16 @@ class Student:
         self.courses_in_progress = []
         self.grades = {}
 
-    grades = {}
-    sum = 0
-    for n in grades:
-        average_st_grade = float(sum(grades) / len(grades))
-        print(average_st_grade)
+    def get_avg_grade(self):
+        sum_grades = 0
+        count = 0
+        for course in self.grades.values():
+            sum_grades += sum[course]
+            count += len(course)
+        return sum_grades / count
 
-    def add_courses(self, course_name):
-        self.finished_course.append(course_name)
-
-    def rate_lecturer(self, name, surname, course, grade):
-        if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
+    def rate_lecturer(self, lecturer, course, grade):
+        if isinstance(lecturer, Lecturer) and course in self.courses_in_progress:
             if course in lecturer.grades:
                 lecturer.grades[course] += [grade]
             else:
@@ -26,11 +25,26 @@ class Student:
             return 'Ошибка'
 
     def __str__(self):
-        return self.name, self.surname, self.courses_in_progress, self.finished_courses, 'average_st_grade'
-        print(some_student)
+        res = f'Имя: {self.name} \n' \
+              f'Фамилия: {self.surname}' \
+              f'Средняя оценка за домашние задания: {self.get_avg_grade()}' \
+              f'Курсы в процессе изучения: {self.courses_in_progress()}' \
+              f'Завершенные курсы: {self.finished_courses()}'
+        return res
 
-student_1 = Student('Anna', 'Veber', 'female')
-student_2 = Student('Jan', 'Wiks', 'male')
+    def __lt__(self, other_student):
+        res = self.get_avg_grade() < other_student.get_avg_grade()
+        return res
+
+    student_list = []
+    def get_avg_student_grade(student_list, course):
+        total_sum = 0
+        for student in student_list:
+            for c, grades_list in student.grades.items():
+                if c == course:
+                    total_sum += sum(grades_list) / len(grades_list)
+        return round(total_sum / len(student_list), 2)
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -38,25 +52,39 @@ class Mentor:
         self.surname = surname
         self.courses_attached = []
 
-mentor_1 = Mentor('Arkady', 'Anks')
-mentor_2 = Mentor('Vova', 'Brain')
 
 class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = {}
 
+    def get_avg_grade(self):
+        sum_grades = 0
+        count = 0
+        for course in self.grades.values():
+            sum_grades += sum[course]
+            count += len(course)
+        return sum_grades / count
+
     def __str__(self):
-        return self.name, self.surname, 'average_lec_grade'
-        print(some_lecturer)
+        res = f'Имя: {self.name} \n' \
+              f'Фамилия: {self.surname}' \
+              f'Средняя оценка за лекции: {self.get_avg_grade()}'
+        return res
 
-    # sum = 0
-    # for n in self.grades:
-    #     average_st_grade = float(sum(self.grades) / len(self.grades))
-    #     print(average_lec_grade)
+    def __lt__(self, other_lecturer):
+        res = self.get_avg_grade() < other_lecturer.get_avg_grade()
+        return res
 
-lecturer_1 = Lecturer('Andy', 'Wish')
-lecturer_2 = Lecturer('Dima', 'Ken')
+    lecturer_list = []
+    def get_avg_lecturer_grade(lecturer_list, course):
+        total_sum = 0
+        for lecturer in lecturer_list:
+            for c, grades_list in lecturer.grades.items():
+                if c == course:
+                    total_sum += sum(grades_list) / len(grades_list)
+        return round(total_sum / len(lecturer_list), 2)
+
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -69,25 +97,17 @@ class Reviewer(Mentor):
             return 'Ошибка'
 
     def __str__(self):
-        return self.name, self.surname
-        print(some_reviewer)
+        res = f'Имя: {self.name} \n' \
+              f'Фамилия: {self.surname}'
+        return res
 
-reviewer_1 = Reviewer('Ivan', 'Rich')
-reviewer_2 = Reviewer('Dina', 'Smile')
-
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
-
-cool_reviewer = Reviewer('Some', 'Buddy')
-cool_reviewer.courses_attached += ['Python']
-
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-
-print(best_student.grades)
-
-def __lt__(self, other):
-    return self.grades < other.grades
 
 courses = ('Python', 'Git', 'Введение в программирование')
+student_1 = Student('Anna', 'Veber', 'female')
+student_2 = Student('Jan', 'Wiks', 'male')
+mentor_1 = Mentor('Arkady', 'Anks')
+mentor_2 = Mentor('Vova', 'Brain')
+lecturer_1 = Lecturer('Andy', 'Wish')
+lecturer_2 = Lecturer('Dima', 'Ken')
+reviewer_1 = Reviewer('Ivan', 'Rich')
+reviewer_2 = Reviewer('Dina', 'Smile')
